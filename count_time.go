@@ -30,9 +30,8 @@ func getDayDiffer(start_time, end_time string) int64 {
 		diff := t2.Unix() - t1.Unix()
 		day = diff/3600/24 + 1
 		return day
-	} else {
-		return day
 	}
+		return day
 }
 
 func flushTime(){
@@ -69,11 +68,11 @@ func fishingReminder(time_spring string) {
 		fmt.Printf("距离元旦假期还有%d天\n", getDayDiffer(time_now, time_year))
 		fmt.Printf("距离春节假期还有%d天\n", getDayDiffer(time_now, time_spring))
 		fmt.Println("上班是帮老板赚钱，摸鱼是赚老板的钱！\n最后，祝愿天下所有摸鱼人，都能愉快的渡过每一天.")
-		flushTime()
 	}
 }
 
 func main() {
 	fishingReminder(time_spring)
+	go flushTime()
 	time.Sleep(time.Second * 30)
 }
