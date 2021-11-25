@@ -15,6 +15,11 @@ var time_spring string
 //判断上下午
 func judgeMorningOrAfternoon(timeHour int) string {
 	if timeHour >= 12 {
+		if timeHour>19||timeHour<9{
+			fmt.Println("多多休息")
+			time.Sleep(time.Second*10)
+			os.Exit(1)
+		}
 		return "下午好"
 	} else {
 		return "上午好"
@@ -72,7 +77,7 @@ func fishingReminder(time_spring string) {
 
 func main() {
 	time_spring = "2022-02-01 00:00:00"
-	fishingReminder(time_spring)
+	go fishingReminder(time_spring)
 	go flushTime()
 	time.Sleep(time.Second * 30)
 }
