@@ -40,6 +40,7 @@ func getDayDiffer(start_time, end_time string) int64 {
 }
 
 func flushTime(){
+	time.Sleep(time.Millisecond*50)
 	for i:=0;i<30;i++ {
 		time_now := time.Now().Format("2006-01-02 15:04:05")
 		fmt.Printf("----------------%s----------------\r", time_now)
