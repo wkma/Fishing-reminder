@@ -16,7 +16,7 @@ var time_spring string
 func judgeMorningOrAfternoon(timeHour int) string {
 	if timeHour >= 12 {
 		if timeHour>19||timeHour<9{
-			fmt.Println("多多休息")
+			fmt.Println("工作日的下班时间，多多休息")
 			time.Sleep(time.Second*10)
 			os.Exit(1)
 		}
@@ -53,7 +53,6 @@ func flushTime(ch chan struct{}){
 func fishingReminder(time_spring string,ch1,ch2 chan struct{}) {
 	/*传入春节时间*/
 	<-ch1
-	time.Sleep(time.Second)
 	time_now := time.Now().Format("2006-01-02 15:04:05")
 	hour := time.Now().Hour()
 	today := time.Now().Weekday()
@@ -83,10 +82,10 @@ func fishingReminder(time_spring string,ch1,ch2 chan struct{}) {
 
 func main() {
 	time_spring = "2022-02-01 00:00:00"
-	x := make(chan struct{})
-	y := make(chan struct{})
-	go fishingReminder(time_spring,x,y)
-	go flushTime(y)
-	close(x)  //关闭x，使可读
+	ch1 := make(chan struct{})
+	ch2 := make(chan struct{})
+	go fishingReminder(time_spring,ch1,ch2)
+	go flushTime(ch2)
+	close(ch1)  //关闭x，使可读
 	time.Sleep(time.Second * 30)
 }
