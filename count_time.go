@@ -39,7 +39,8 @@ func getDayDiffer(start_time, end_time string) int64 {
 		return day
 }
 
-func flushTime(){
+func flushTime(ch chan struct{}){
+	<-ch
 	time.Sleep(time.Millisecond*50)
 	for i:=0;i<30;i++ {
 		time_now := time.Now().Format("2006-01-02 15:04:05")
@@ -49,8 +50,10 @@ func flushTime(){
 }
 
 //打印信息
-func fishingReminder(time_spring string) {
+func fishingReminder(time_spring string,ch1,ch2 chan struct{}) {
 	/*传入春节时间*/
+	<-ch1
+	time.Sleep(time.Second)
 	time_now := time.Now().Format("2006-01-02 15:04:05")
 	hour := time.Now().Hour()
 	today := time.Now().Weekday()
@@ -62,8 +65,8 @@ func fishingReminder(time_spring string) {
 	if today == time.Sunday || today == time.Saturday {
 		fmt.Println("今天摸鱼办也休息哦")
 		fmt.Println("周末愉快")
-		time.Sleep(time.Second * 10)
-		os.Exit(1)
+		//time.Sleep(time.Second * 10)
+		//os.Exit(1)
 	} else {
 		fmt.Printf("%s，摸鱼人！\n",judgeMorningOrAfternoon(hour))
 		fmt.Println("工作再累 一定不要忘记摸鱼哦！")
@@ -74,11 +77,16 @@ func fishingReminder(time_spring string) {
 		fmt.Printf("距离春节假期还有%d天\n", getDayDiffer(time_now, time_spring))
 		fmt.Println("上班是帮老板赚钱，摸鱼是赚老板的钱！\n最后，祝愿天下所有摸鱼人，都能愉快的渡过每一天.")
 	}
+	close(ch2)
+
 }
 
 func main() {
 	time_spring = "2022-02-01 00:00:00"
-	go fishingReminder(time_spring)
-	go flushTime()
+	x := make(chan struct{})
+	y := make(chan struct{})
+	go fishingReminder(time_spring,x,y)
+	go flushTime(y)
+	close(x)  //关闭x，使可读
 	time.Sleep(time.Second * 30)
 }
