@@ -81,7 +81,7 @@ func fishingReminder(time_spring string,ch1,ch2 chan struct{}) {
 }
 
 func main() {
-	time_spring = "2023-01-22 00:00:00"
+	time_spring = "2023-02-10 00:00:00"
 	ch1,ch2 := make(chan struct{}),make(chan struct{})
 	go fishingReminder(time_spring,ch1,ch2)
 	go flushTime(ch2)
