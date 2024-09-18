@@ -1,2 +1,2 @@
 # Fishing-reminder
-摸鱼提示消息
+时间提示消息
